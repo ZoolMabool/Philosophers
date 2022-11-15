@@ -6,9 +6,11 @@ NAME		= philo
 
 SRC			= parsing/check_number_of_arg.c\
 			  utils_libft/utils_1.c\
-			  error/print_error.c\
+			  print/print_error.c\
 			  main.c\
 			  get_time.c\
+			  routine.c\
+			  init/struct_init.c\
 
 SRCDIR 		= ./src/
 
@@ -18,7 +20,7 @@ SRCS 		= $(addprefix $(SRCDIR), $(SRC))
 
 OBJS		= $(SRCS:.c=.o)
 
-CFLAGS 		= -Wall -Werror -Wextra -pthread -g -I$(INCDIR)
+CFLAGS 		= -Wall -Werror -Wextra -g -pthread -I$(INCDIR)
 
 CC			= gcc
 
