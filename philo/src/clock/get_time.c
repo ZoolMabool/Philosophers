@@ -6,13 +6,13 @@
 /*   By: ybaudoui <ybaudoui@student.42angoulem      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 09:48:03 by ybaudoui          #+#    #+#             */
-/*   Updated: 2022/11/16 09:29:48 by ybaudoui         ###   ########.fr       */
+/*   Updated: 2022/11/17 09:36:33 by ybaudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	get_time(void)
+long int	get_time(void)
 {
 	struct timeval	time;
 	long			milliseconds;
@@ -23,7 +23,7 @@ int	get_time(void)
 	return (milliseconds);
 }
 
-int	current_time(long int time_start)
+long int	current_time(long int time_start)
 {
 	int	time;
 

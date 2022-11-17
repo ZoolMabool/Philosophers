@@ -12,7 +12,8 @@ SRC			= parsing/check_number_of_arg.c\
 			  clock/get_time.c\
 			  routine/routine.c\
 			  init_data/struct_init.c\
-
+			  clean/clean_program.c\
+			
 SRCDIR 		= ./src/
 
 INCDIR 		= ./includes/
@@ -21,7 +22,7 @@ SRCS 		= $(addprefix $(SRCDIR), $(SRC))
 
 OBJS		= $(SRCS:.c=.o)
 
-CFLAGS 		= -Wall -Werror -Wextra -g -pthread -I$(INCDIR)
+CFLAGS 		= -Wall -Werror -Wextra -g -pthread -I$(INCDIR) #-fsanitize=thread
 
 CC			= gcc
 

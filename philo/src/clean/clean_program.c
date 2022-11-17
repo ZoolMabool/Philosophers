@@ -1,37 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   clean_program.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ybaudoui <ybaudoui@student.42angoulem      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/07 15:44:34 by ybaudoui          #+#    #+#             */
-/*   Updated: 2022/11/17 17:13:36 by ybaudoui         ###   ########.fr       */
+/*   Created: 2022/11/17 16:39:28 by ybaudoui          #+#    #+#             */
+/*   Updated: 2022/11/17 17:15:29 by ybaudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
-#include <pthread.h>
 
-int	main(int argc, char **argv)
+void	clean_program(t_mutexes *mutexes, t_data *data)
 {
-	t_data		data;
-	t_mutexes	mutexes;
+	int	i;
 
-	if (argc != 5 && argc != 6)
+	i = 0;
+	while (i < data->number_philo)
 	{
-		printf("Wrong amount of arguments\n");
-		return (1);
+		pthread_join(data->philo[i], NULL);
+		i++;
 	}
-	if (check_num(argv))
+	i = 0;
+	while (i < data->number_philo)
 	{
-		print_error();
-		return (1);
+		pthread_mutex_destroy(&mutexes->fork[i]);
+		i++;
 	}
-	struct_init(&data, argv, &mutexes);
-	init_mutex(&mutexes, data.number_philo);
-	philo_init(&data, &mutexes);
-	init_death(&data);
-	clean_program(&mutexes, &data);
-	return (0);
+	pthread_mutex_destroy(&mutexes->philo_die);
+	pthread_mutex_destroy(&mutexes->philo_eat);
+	pthread_mutex_destroy(&mutexes->print_lock);
+	free(data->philo);
+	free(data->philo_data);
+	free(mutexes->fork);
 }
