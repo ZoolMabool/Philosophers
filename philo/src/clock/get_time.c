@@ -6,7 +6,7 @@
 /*   By: ybaudoui <ybaudoui@student.42angoulem      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 09:48:03 by ybaudoui          #+#    #+#             */
-/*   Updated: 2022/11/14 11:15:02 by ybaudoui         ###   ########.fr       */
+/*   Updated: 2022/11/16 09:29:48 by ybaudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,4 +21,12 @@ int	get_time(void)
 	milliseconds = time.tv_sec * 1000;
 	milliseconds += time.tv_usec / 1000;
 	return (milliseconds);
+}
+
+int	current_time(long int time_start)
+{
+	int	time;
+
+	time = (get_time() - time_start);
+	return (time);
 }

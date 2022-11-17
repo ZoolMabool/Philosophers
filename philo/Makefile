@@ -5,12 +5,13 @@ _GREEN="\e[38;5;10m"
 NAME		= philo 
 
 SRC			= parsing/check_number_of_arg.c\
-			  utils_libft/utils_1.c\
+			  utils_libft/function_lib.c\
 			  print/print_error.c\
+			  print/print_messages.c\
 			  main.c\
-			  get_time.c\
-			  routine.c\
-			  init/struct_init.c\
+			  clock/get_time.c\
+			  routine/routine.c\
+			  init_data/struct_init.c\
 
 SRCDIR 		= ./src/
 

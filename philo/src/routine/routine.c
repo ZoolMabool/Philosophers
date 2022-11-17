@@ -6,7 +6,7 @@
 /*   By: ybaudoui <ybaudoui@student.42angoulem      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 11:17:45 by ybaudoui          #+#    #+#             */
-/*   Updated: 2022/11/15 16:36:26 by ybaudoui         ###   ########.fr       */
+/*   Updated: 2022/11/16 10:43:14 by ybaudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,30 @@
 
 void	ft_eat(t_philo_data *philo_data)
 {
-	pthread_mutex_lock(&philo_data->mutexes->print_lock);	
-	printf("\033[32;01mPhilo %d is eating 🍕\033[00m\n", philo_data->philo_id + 1);
-	pthread_mutex_unlock(&philo_data->mutexes->print_lock);
+	pthread_mutex_lock(&philo_data->mutexes->fork[philo_data->philo_id - 1]);
+	print_messages(philo_data, "has taken a fork 🍴", 1);
+	if (philo_data->philo_number == 1)
+	{
+		pthread_mutex_unlock(&philo_data->mutexes->fork[philo_data->philo_id - 1]);
+		exit (1);
+	}
+	pthread_mutex_lock(&philo_data->mutexes->fork[philo_data->philo_id % philo_data->philo_number]);
+	print_messages(philo_data, "has taken a fork 🍴", 1);
+	print_messages(philo_data, "is eating 🍝", 2);
 	usleep(philo_data->eat_time * 1000);
+	pthread_mutex_unlock(&philo_data->mutexes->fork[philo_data->philo_id % philo_data->philo_number]);
+	pthread_mutex_unlock(&philo_data->mutexes->fork[philo_data->philo_id - 1]);
 }
 
 void	ft_sleep(t_philo_data *philo_data)
 {
-	printf("\033[34;01mPhilo %d is sleeping 💤\033[00m\n", philo_data->philo_id + 1);
+	print_messages(philo_data, "is sleeping 💤", 3);
 	usleep(philo_data->sleep_time * 1000);
 }
 
 void	ft_think(t_philo_data *philo_data)
 {
-	printf("\033[33;01mPhilo %d is thinking 💡\033[00m\n", philo_data->philo_id + 1);
+	print_messages(philo_data, "is thinking 💡", 4);
 }
 
 void	*routine(void *philo_data)
