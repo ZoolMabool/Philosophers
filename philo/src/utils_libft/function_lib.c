@@ -1,63 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_1.c                                          :+:      :+:    :+:   */
+/*   function_lib.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ybaudoui <ybaudoui@student.42angoulem      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 13:18:16 by ybaudoui          #+#    #+#             */
-/*   Updated: 2022/11/10 11:41:21 by ybaudoui         ###   ########.fr       */
+/*   Updated: 2022/11/18 10:58:41 by ybaudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	ft_atoi(const char *nptr)
+int	ft_atoi(const char *nptr, int *error)
 {
-	char	*tab;
 	int		i;
-	int		nbr;
-	int		minus;
+	long	nbr;
 
-	minus = 1;
 	i = 0;
 	nbr = 0;
-	tab = (char *) nptr;
-	while ((tab[i] == ' ') || (tab[i] >= '\t' && tab[i] <= '\r'))
+	while ((nptr[i] == ' ') || (nptr[i] >= '\t' && nptr[i] <= '\r'))
 		i++;
-	if (tab[i] == '-')
+	while ((nptr[i] != '\0') && (nptr[i] >= '0') && (nptr[i] <= '9'))
 	{
-		minus = minus * (-1);
+		nbr = nbr * 10 + (nptr[i] - '0');
+		if (nbr > 2147483647)
+			*error += 1;
 		i++;
 	}
-	else if (tab[i] == '+')
-		i++;
-	while ((tab[i] != '\0') && (tab[i] >= '0') && (tab[i] <= '9'))
-	{
-		nbr = nbr * 10 + (tab[i] - '0');
-		i++;
-	}
-	return (nbr * minus);
-}
-
-int	check_num(char **argv)
-{
-	int	i;
-	int	j;
-
-	i = 1;
-	while (argv[i])
-	{
-		j = 0;
-		while (argv[i][j])
-		{
-			if (!ft_isdigit(argv[i][j]))
-				return (1);
-			j++;
-		}
-		i++;
-	}
-	return (0);
+	return (nbr);
 }
 
 int	ft_isdigit(int character)

@@ -6,36 +6,50 @@
 /*   By: ybaudoui <ybaudoui@student.42angoulem      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 11:19:59 by ybaudoui          #+#    #+#             */
-/*   Updated: 2022/11/07 16:25:42 by ybaudoui         ###   ########.fr       */
+/*   Updated: 2022/11/18 11:08:43 by ybaudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-//static int	check_number_of_arg(char **argv)
-//{
-//	int	i;
-//
-//	i = 1;
-//	while (argv[i])
-//		i++;
-//	return (i);
-//}
+static int	verif_number_arg(int argc)
+{
+	if (argc != 5 && argc != 6)
+	{
+		printf("Wrong amount of arguments\n");
+		return (1);
+	}
+	return (0);
+}
 
-int	verif_arg(char **argv)
+static int	verif_digit(char **argv)
 {
 	int	i;
 	int	j;
 
-	i = 0;
-	j = 0;
-	if (argv[i][0] == '-' || argv[i][0] == '+')
-		return (0);
+	i = 1;
 	while (argv[i])
 	{
-		if (ft_isdigit(argv[i][j]) == 0)
-			return (1);
+		j = 0;
+		while (argv[i][j])
+		{
+			if (!ft_isdigit(argv[i][j]))
+			{	
+				print_error_digit();
+				return (1);
+			}
+			j++;
+		}
 		i++;
 	}
+	return (0);
+}
+
+int	verif_arg(int argc, char **argv)
+{
+	if (verif_number_arg(argc))
+		return (1);
+	if (verif_digit(argv))
+		return (1);
 	return (0);
 }
