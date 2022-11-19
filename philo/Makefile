@@ -22,7 +22,7 @@ SRCS 		= $(addprefix $(SRCDIR), $(SRC))
 
 OBJS		= $(SRCS:.c=.o)
 
-CFLAGS 		= -Wall -Werror -Wextra -g -pthread -I$(INCDIR) #-fsanitize=thread
+CFLAGS 		= -Wall -Werror -Wextra -g -pthread -I$(INCDIR) -fsanitize=thread
 
 CC			= gcc
 

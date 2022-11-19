@@ -56,6 +56,34 @@ static void	ft_think(t_philo_data *philo_data)
 	print_messages(philo_data, "is thinking 💡", 4);
 }
 
+static void	*eat_enough(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->number_philo)
+	{
+		pthread_mutex_lock(&data->mutexes->philo_die);
+		if (data->philo_data[i].philo_die == TRUE)
+		{
+			pthread_mutex_unlock(&data->mutexes->philo_die);
+			return (NULL);
+		}
+		pthread_mutex_lock(&data->philo_data->mutexes->eat_enough);
+		if (data->philo_data[i].eat_enough)
+		{
+			pthread_mutex_lock(&data->mutexes->all_eat);
+			data->all_eat++;
+			data->philo_data[i].eat_enough = 0;
+			pthread_mutex_unlock(&data->mutexes->all_eat);
+		}
+		pthread_mutex_unlock(&data->philo_data->mutexes->eat_enough);
+		i++;
+		pthread_mutex_unlock(&data->mutexes->philo_die);
+	}
+	return (NULL);
+}
+
 void	*check_meal(void *arg)
 {
 	int		i;
@@ -63,29 +91,7 @@ void	*check_meal(void *arg)
 
 	data = arg;
 	while (data->all_eat < data->number_philo)
-	{
-		i = 0;
-		while (i < data->number_philo)
-		{
-			pthread_mutex_lock(&data->mutexes->philo_die);
-			if (data->philo_data[i].philo_die == TRUE)
-			{
-				pthread_mutex_unlock(&data->mutexes->philo_die);
-				return (NULL);
-			}
-			pthread_mutex_lock(&data->philo_data->mutexes->eat_enough);
-			if (data->philo_data[i].eat_enough)
-			{
-				pthread_mutex_lock(&data->mutexes->all_eat);
-				data->all_eat++;
-				data->philo_data[i].eat_enough = 0;
-				pthread_mutex_unlock(&data->mutexes->all_eat);
-			}
-				pthread_mutex_unlock(&data->philo_data->mutexes->eat_enough);
-			i++;
-			pthread_mutex_unlock(&data->mutexes->philo_die);
-		}
-	}
+		eat_enough(data);
 	i = 0;
 	while (i < data->number_philo)
 	{
@@ -108,14 +114,17 @@ void	*check_death(void *arg)
 	{
 		pthread_mutex_lock(&data->mutexes->all_eat);
 		if (data->all_eat == data->number_philo)
+		{
+			pthread_mutex_unlock(&data->mutexes->all_eat);
 			return (NULL);
+		}
 		pthread_mutex_unlock(&data->mutexes->all_eat);
 		pthread_mutex_lock(&data->mutexes->philo_eat);
 		if (data->philo_data[i].death_time
 			< get_time() - data->philo_data[i].last_eat)
 		{
-			pthread_mutex_unlock(&data->mutexes->philo_eat);
 			print_messages(&data->philo_data[i], "died 💀", 5);
+			pthread_mutex_unlock(&data->mutexes->philo_eat);
 			i = 0;
 			while (i < data->number_philo)
 			{
