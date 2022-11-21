@@ -6,7 +6,7 @@
 /*   By: ybaudoui <ybaudoui@student.42angoulem      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 11:17:23 by ybaudoui          #+#    #+#             */
-/*   Updated: 2022/11/18 17:03:47 by ybaudoui         ###   ########.fr       */
+/*   Updated: 2022/11/21 10:35:19 by ybaudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int			init_mutex(t_mutexes *mutexes, int number_philo);
 /*****timestamp*****/
 
 long int	get_time(void);
-long int	current_time(long int time_start);
+long int	c_time(long int time_start);
 
 /*****parsing*****/
 
@@ -99,10 +99,28 @@ void		ft_free(t_data *data, t_mutexes *mutexes);
 /*****print*****/
 
 void		print_messages(t_philo_data *philo_data, char *message, int flag);
+int			print_death(t_data *data, int i);
 
-/*****program*****/
+/*****death*****/
+
 void		*check_death(void *arg);
-void		*routine(void *data);
+int			is_one_philo_dead(t_philo_data *philo_data);
+
+/*****sleep*****/
+
+void		ft_sleep(t_philo_data *philo_data);
+
+/*****eat*****/
+
+int			ft_eat(t_philo_data *philo_data);
 void		*check_meal(void *arg);
+
+/*****think*****/
+
+void		ft_think(t_philo_data *philo_data);
+
+/*****routine*****/
+
+void		*routine(void *data);
 
 #endif
