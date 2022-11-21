@@ -6,7 +6,7 @@
 /*   By: ybaudoui <ybaudoui@student.42angoulem      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 09:55:50 by ybaudoui          #+#    #+#             */
-/*   Updated: 2022/11/21 09:57:33 by ybaudoui         ###   ########.fr       */
+/*   Updated: 2022/11/21 10:45:35 by ybaudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	ft_eat(t_philo_data *philo_data)
 	return (0);
 }
 
-static void	*eat_enough(t_data *data)
+static int	eat_enough(t_data *data)
 {
 	int	i;
 
@@ -61,7 +61,7 @@ static void	*eat_enough(t_data *data)
 		if (data->philo_data[i].philo_die == TRUE)
 		{
 			pthread_mutex_unlock(&data->mutexes->philo_die);
-			return (NULL);
+			return (TRUE);
 		}
 		pthread_mutex_unlock(&data->mutexes->philo_die);
 		pthread_mutex_lock(&data->philo_data->mutexes->eat_enough);
@@ -75,7 +75,7 @@ static void	*eat_enough(t_data *data)
 		pthread_mutex_unlock(&data->philo_data->mutexes->eat_enough);
 		i++;
 	}
-	return (NULL);
+	return (FALSE);
 }
 
 void	*check_meal(void *arg)
@@ -85,7 +85,8 @@ void	*check_meal(void *arg)
 
 	data = arg;
 	while (data->all_eat < data->number_philo)
-		eat_enough(data);
+		if (eat_enough(data) == TRUE)
+			return (NULL);
 	i = 0;
 	while (i < data->number_philo)
 	{

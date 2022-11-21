@@ -6,7 +6,7 @@
 /*   By: ybaudoui <ybaudoui@student.42angoulem      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 11:37:52 by ybaudoui          #+#    #+#             */
-/*   Updated: 2022/11/18 17:03:31 by ybaudoui         ###   ########.fr       */
+/*   Updated: 2022/11/21 10:49:20 by ybaudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ int	init_struct(t_data *data, char **argv, t_mutexes *mutexes)
 	data->number_philo_must_eat = -1;
 	data->all_eat = 0;
 	data->mutexes = mutexes;
+	if (data->number_philo <= 0 || data->time_to_die <= 0
+		|| data->time_to_sleep <= 0 || data->time_to_eat <= 0)
+		error++;
 	if (argv[5])
 		data->number_philo_must_eat = ft_atoi(argv[5], &error);
 	if (error)
